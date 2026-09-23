@@ -11,31 +11,43 @@ var STEPS = [
     newContext: true,
     tag: "FIGMA MCP",
     tagClass: "tag-sky",
-    title: "Подключение Figma MCP",
-    subtitle: "MCP-сервер для Figma в opencode — двумя промптами",
+    title: "Подключение Figma MCP (Figsor)",
+    subtitle: "Запись прямо на канвас Figma — тремя промптами",
     description:
-      "MCP (Model Context Protocol) — это «мост» между opencode и внешними сервисами: подключили сервер — и opencode научился сам ходить в Figma. Figma Context MCP от GLips умеет вытаскивать данные макета по ссылке (get_figma_data) и скачивать картинки из макета (download_figma_image). Нужен токен: figma.com → Settings → Security → Personal access tokens.",
+      "MCP (Model Context Protocol) — это «мост» между opencode и внешними сервисами. Мы подключаем Figsor — free-сервер с 45+ инструментами для РЕДАКТИРОВАНИЯ Figma: create_frame, create_rectangle, create_text, create_ellipse, vector, boolean-операции. Схема: opencode → MCP-сервер figsor (он же поднимает WebSocket на порту 3055) → плагин внутри Figma. Единственный ручной шаг — импорт плагина в Figma.",
     steps: [
       {
-        label: "Установить MCP-сервер",
+        label: "Установить MCP-сервер и скачать плагин",
         description:
-          "Скопируйте промпт, вставьте свой Figma API-токен вместо [ТОКЕН] и отправьте:",
+          "Скопируйте промпт и отправьте:",
         prompt:
-          "Подключи мне Figma Context MCP-сервер (пакет figma-developer-mcp от GLips). Установи его как local-сервер через npx в мой opencode.json. Figma API-токен у меня такой: [ТОКЕН] — добавь его в environment сервера. Покажи итоговый конфиг и объясни каждую строку.",
-        note: "Проверка: opencode показал итоговый opencode.json с сервером figma и вашим токеном в environment"
+          "Подключи мне MCP-сервер Figsor — он умеет писать прямо на канвас Figma. Пакет называется figsor и есть на npm. 1) Добавь сервер figsor в мой конфиг opencode.jsonc как local-сервер с командой npx -y figsor. 2) Склонируй репозиторий github.com/AsifKabirAntu/figsor в папку рядом с моими проектами и найди в нём манифест Figma-плагина (figma-plugin/manifest.json). 3) Покажи итоговый конфиг и полный путь к файлу manifest.json — мне он нужен для импорта плагина в Figma.",
+        note: "Проверка: opencode показал итоговый конфиг с сервером figsor и путь вроде C:\\Users\\<вы>\\figsor\\figma-plugin\\manifest.json"
       },
       {
-        label: "Проверить, что всё работает",
+        label: "Импортировать плагин в Figma (руками, один раз)",
         description:
-          "Вставьте ссылку на любой ваш макет в Figma вместо [ссылка] и отправьте промпт:",
-        prompt2:
-          "Проверь, что Figma Context MCP подключён: покажи его инструменты (get_figma_data, download_figma_image) и сделай тестовый запрос по этой ссылке на макет: [ссылка]. Если есть ошибки — почини конфиг.",
+          "Единственный ручной шаг — у Figma нет API-записи, поэтому community-серверы работают через плагин:",
         bullets: [
-          "opencode должен показать инструменты get_figma_data и download_figma_image",
-          "Тестовый запрос вернул данные макета — ошибки нет",
-          "После изменения конфига перезапустите opencode — MCP подхватится заново"
+          "Откройте Figma Desktop → любое приложение файла",
+          "Меню слева сверху → Plugins → Development → Import plugin from manifest",
+          "Выберите файл manifest.json из папки, которую склонировал opencode",
+          "Запустите плагин: Plugins → Development → Figsor — окно должно показать «connected»"
         ],
-        note: "Если есть ошибки — opencode починит конфиг сам. После правки opencode.json перезапуск обязателен"
+        note: "Если плагин пишет «connection refused» на порт 3055 — WebSocket-сервер ещё не запущен: перезапустите opencode (он поднимет сервер и порт) или запустите npx -y figsor в отдельном терминале"
+      },
+      {
+        label: "Перезапустить opencode и проверить запись",
+        description:
+          "Перезапустите opencode (MCP-серверы подхватываются только при старте), откройте файл в Figma с запущенным плагином и отправьте промпт:",
+        prompt2:
+          "Проверь, что MCP-сервер figsor подключён: покажи его инструменты (create_frame, create_rectangle, create_text, create_ellipse) и создай в моём открытом файле Figma тестовый прямоугольник 200×100. Если есть ошибки — почини конфиг или подскажи, что проверить в плагине.",
+        bullets: [
+          "Прямоугольник появился на канвасе Figma",
+          "Если нет — попросите opencode: «Плагин Figsor показывает WebSocket error: connection refused на порт 3055. Проверь через netstat, слушает ли кто-то порт 3055, и почини запуск MCP-сервера»",
+          "Плагин Figsor должен быть запущен в Figma во время работы"
+        ],
+        note: "Проверка: промпт «Создай прямоугольник 200×100 в Figma» работает — запись на канвас есть"
       }
     ]
   },
