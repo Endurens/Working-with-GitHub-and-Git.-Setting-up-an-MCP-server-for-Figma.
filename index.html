@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Работа с Github и Git. Настройка MCP-сервера для Figma</title>
+  <meta name="description" content="Практический гайд: подключение Figma Context MCP к opencode, настройка Git, первый репозиторий, GitHub и живая ссылка через GitHub Pages. Всё делает opencode — вы контролируете." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Верхняя панель с прогрессом -->
+  <header class="topbar">
+    <div class="container">
+      <div class="progress-row">
+        <span class="progress-label">Прогресс лекции</span>
+        <span class="progress-count" id="progressCount">0/8 шагов</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <p class="progress-hint" id="progressHint"></p>
+    </div>
+  </header>
+
+  <main class="container page-bottom">
+
+    <!-- Hero -->
+    <section class="hero animate-fade-up">
+      <div class="pill"><span class="dot"></span><span>Git & GitHub × Figma MCP</span></div>
+      <h1>Работа с Github и Git.<br /><span class="shimmer-text">Настройка MCP-сервера для Figma</span></h1>
+      <p class="lead">Всё делает opencode — вы даёте промпты и контролируете каждое действие. Сначала подключим Figma Context MCP к opencode, затем настроим Git и закончим живой ссылкой на GitHub Pages. Отмечайте шаги по мере выполнения.</p>
+      <div class="chips" id="chips"></div>
+    </section>
+
+    <!-- Карточки шагов (рендерит js/app.js) -->
+    <section class="steps" id="steps"></section>
+
+    <!-- Финальный баннер -->
+    <section class="final-banner animate-scale-in" id="finalBanner" style="display:none">
+      <div class="emoji">🚀</div>
+      <h3>Всё готово! Ты в интернете.</h3>
+      <p>Git настроен, код лежит на GitHub, учебная страница и mini-figma работают по живым ссылкам — можно скидывать друзьям и добавлять в портфолио.</p>
+      <p style="margin-top:12px"><button class="done-btn" id="resetBtn" type="button">Сбросить прогресс</button></p>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="footer">
+      <p class="mono">Git & GitHub Guide</p>
+      <p id="footerCount">0 из 8 выполнено</p>
+    </footer>
+
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
